@@ -4,9 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require("cors");
+require('dotenv').config();
 
 //conexion a mongo Atlas
 const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGODB_STRING);
 require('./models/usuario');
 require('./models/refaccion');
 require('./models/ticket');
@@ -20,6 +22,7 @@ var refaccionesRouter = require('./routes/refacciones');
 var ticketsRouter = require('./routes/tickets');
 var solcitudesRouter = require('./routes/solicitudes');
 var tecnicosRouter = require('./routes/tecnicos');
+var sensorRouter = require('./routes/sensorApi');
 
 var app = express();
 
@@ -51,6 +54,7 @@ app.use('/refacciones', refaccionesRouter);
 app.use('/tickets', ticketsRouter);
 app.use('/solicitudes', solcitudesRouter);
 app.use('/tecnicos', tecnicosRouter);
+app.use('/sensorApi', sensorRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

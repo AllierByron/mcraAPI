@@ -153,6 +153,14 @@ router.get('/:email', authTkn.verificarHeaderToken, async(req, res)=>{
 
 });
 
+router.get('/', authTkn.verificarHeaderToken, async(req, res)=>{
+  let usr = await usuario.find({});
+  if(!usr) return res.status(401).send({message: 'Usuarios no encontrado'});
+
+  res.status(200).send({usr});
+
+});
+
 router.delete('/:email',authTkn.verificarHeaderToken, async (req, res)=>{
   let usr = await usuario.findOne({email: req.params.email});
   if(!usr) return res.status(401).send({message: 'Usuario no encontrado'});
