@@ -102,9 +102,8 @@ router.delete('/:noRegistro',authTkn.verificarHeaderToken, async (req, res)=>{
 
 router.get('/', async(req, res)=>{
   let tec = await tecnico.find({});
-
+  
   res.status(200).send({tec});
-
 });
 
 module.exports = router;

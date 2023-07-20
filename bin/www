@@ -7,6 +7,16 @@
 var app = require('../app');
 var debug = require('debug')('mcraback:server');
 var http = require('http');
+//ssl
+var https = require('https');
+const fs = require("fs-extra");
+const path = require("path");
+
+//ssl
+const options ={
+  key:fs.readFileSync(path.join(__dirname,'../cert/key.pem')),
+  cert:fs.readFileSync(path.join(__dirname,'../cert/cert.pem'))
+}
 
 /**
  * Get port from environment and store in Express.
@@ -19,15 +29,20 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+// var server = http.createServer(app);
+const server = https.createServer(options,app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+// server.listen(port);
+//ssl
+server.listen(port,()=>{console.log(`Secure Server is listening on port ${port}`)});
+//fin de la linea ssl
 server.on('error', onError);
 server.on('listening', onListening);
+
 
 /**
  * Normalize a port into a number, string, or false.
