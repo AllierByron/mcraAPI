@@ -11,4 +11,4 @@ Para compilar a android tienes que hacer lo siguiente:\
 3° Pasas todo lo de esa carpeta (no la carpeta en si, solo el contenido), a la carpeta
 www que esta en el proyecto de cordova\
 4° Dentro de esa carpeta de cordova abres el CMD y corres "cordova build android"\
-5° Ya que haya terminado, corres "cordova run android"\
+5° Ya que haya terminado, corres "cordova run android"
