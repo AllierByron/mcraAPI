@@ -2,6 +2,8 @@ const amongoose = require("mongoose");
 
 const solicitudSchema = new amongoose.Schema({
     noRegistro: Number,
+    nombre: String,
+    apellidos: String,
     titulo:String,
     descripcion: String,
     correo: String,//opcionales

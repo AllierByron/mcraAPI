@@ -20,7 +20,7 @@ const mongoose = require("mongoose");
 const { route } = require('.');
 const solicitud = mongoose.model("solicitud");
 
-router.post('/', authTkn.verificarHeaderToken, async (req, res)=>{
+router.post('/', /*authTkn.verificarHeaderToken,*/ async (req, res)=>{
   
   let soli = await solicitud.findOne({descripcion: req.body.descripcion});
   if(soli) return res.status(401).send({message: "Solicitud existente"});
@@ -31,6 +31,8 @@ router.post('/', authTkn.verificarHeaderToken, async (req, res)=>{
 
   let soliNueva = await new solicitud({
     noRegistro: parseInt(soli)+1,
+    nombre: req.body.nombre,
+    apellidos: req.body.apellidos,
     titulo: req.body.titulo,
     descripcion: req.body.descripcion,
     correo: req.body.correo,

@@ -6,7 +6,9 @@ var activo = false;
 var llamadas = 0;
 let data ={
     temperatura:"",
-    humedad:""
+    humedad:"",
+    fotoresistencia:"",
+    msj:""
 }
 var codigoDoc;
 var activarSensor = false;
@@ -16,9 +18,17 @@ router.post('/', function(req, res) {
     llamadas++;
     activo = true;
     res.status(201).send('temperatura:'+req.body.temperatura+"\n"+    
-                         'humedad: '+req.body.humedad);
+                         'humedad: '+req.body.humedad+"\n"+    
+                         'valor de la fotoresistencia: '+req.body.fotoresistencia+"\n"+    
+                         'msj: '+req.body.msj);
     data.temperatura = req.body.temperatura;
     data.humedad = req.body.humedad;
+    data.fotoresistencia = req.body.fotoresistencia;
+    data.msj = req.body.msj;
+    console.log('temperatura:'+req.body.temperatura+"\n"+    
+                'humedad: '+req.body.humedad+"\n"+    
+                'valor de la fotoresistencia: '+req.body.fotoresistencia+"\n"+    
+                'msj: '+req.body.msj);
     checkChanges();
     // res.send("si jala");
 });
