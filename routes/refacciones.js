@@ -140,4 +140,9 @@ router.delete('/:codigo', authTkn.verificarHeaderToken, async (req, res)=>{
     res.status(200).send({refa});
 });
 
+router.get('/', authTkn.verificarHeaderToken, async(req, res)=>{
+    let refa = await refaccion.find({});
+    res.status(201).send({refa});
+});
+
 module.exports = router;
