@@ -14,6 +14,7 @@ var router = express.Router();
 const bcrypt = require('bcrypt');
 const {check, validationResult} = require('express-validator');
 const authTkn = require('../services/usuarioService');
+const bard = require('../services/bardService');
 
 //de mongo
 const mongoose = require("mongoose");
@@ -23,17 +24,33 @@ const solicitud = mongoose.model("solicitud");
 router.post('/', /*authTkn.verificarHeaderToken,*/ async (req, res)=>{
   
   let soli = await solicitud.findOne({descripcion: req.body.descripcion});
-  if(soli) return res.status(401).send({message: "Solicitud existente"});
+  // if(soli) return res.status(401).send({message: "Solicitud existente"});
   
   if(!req.body.numeroTel || req.body.numeroTel == "") return res.status(401).send({message: "Campo telefono no ingresado"});
 
   soli = await solicitud.count({});
 
+  let soliProcesada = await bard.procesar(req.body.descripcion);
+
+  if(!soliProcesada || soliProcesada == ''){
+    soliProcesada={
+      response:{
+        filtrada:{
+          Electrodomestico:'',
+          Prioridad:'',
+          Titulo:''
+        }
+      }
+    }
+  }
+
   let soliNueva = await new solicitud({
     noRegistro: parseInt(soli)+1,
+    // electrodomestico: soliProcesada.response.filtrada.Electrodomestico,
+    // prioridad: soliProcesada.response.filtrada.Prioridad,
     nombre: req.body.nombre,
     apellidos: req.body.apellidos,
-    titulo: req.body.titulo,
+    // titulo: soliProcesada.response.filtrada.Titulo,
     descripcion: req.body.descripcion,
     correo: req.body.correo,
     numeroTel: req.body.numeroTel,
@@ -175,5 +192,14 @@ router.post('/completar', async(req, res)=>{
   res.status(200).send({soliActualizada});
 });
 
+
+router.get('/filtrar/:filtro', async(req, res)=>{
+  let soli = await solicitud.find({estado: req.params.filtro});
+  if(!soli) return res.status(401).send({message: 'Solcitud no encontrada'});
+
+  if(soli.estado == 'Inactivo') return res.status(401).send({message: 'Solicitud inactiva'});
+
+  res.status(200).send({soli});
+});
 
 module.exports = router;

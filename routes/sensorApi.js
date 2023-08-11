@@ -1,5 +1,8 @@
 var express = require('express');
 var router = express.Router();
+const mongoose = require("mongoose");
+const medicion = mongoose.model("medicion");
+
 
 //variables mias
 var activo = false;
@@ -29,6 +32,8 @@ router.post('/', function(req, res) {
                 'humedad: '+req.body.humedad+"\n"+    
                 'valor de la fotoresistencia: '+req.body.fotoresistencia+"\n"+    
                 'msj: '+req.body.msj);
+
+    // registrarMedicion(data);
     checkChanges();
     // res.send("si jala");
 });
@@ -53,12 +58,12 @@ function checkChanges(){
 //active: it means the sensor is active and transmiting data
 //inactive: it means the sensor its not active
 //if it is active the data its send to the active ticket
-router.post('/enviar', function(req, res) {
-    if(activo){
+router.get('/enviar', function(req, res) {
+    // if(activo){
         res.status(201).send({data});
-    }else{
-        res.status(201).send({message:'No esta activo el sensor'});
-    }
+    // }else{
+    //     res.status(201).send({message:'No esta activo el sensor'});
+    // }
 });
 
 router.get('/', async(req, res)=>{
@@ -77,5 +82,63 @@ router.get('/activarSensor/:estado', async(req, res)=>{
     }
     res.status(201).send({sensorActivado: activarSensor});
 });
+
+
+// async function registrarMedicion(data){
+//     const seconds = 600;
+//     let fecha = new Date().toLocaleDateString('en-GB');
+
+//     let hms = new Date(seconds * 1000).toISOString().slice(11, 19);
+
+//     let cant = medicion.findOne({createdAt: fecha});
+
+//     if(!cant){
+
+//         cant = await medicion.findOne({}).sort({_id:-1}).limit(1);
+
+//         let medi = await new medicion({
+
+//             noRegistro: parseInt(cant.noRegistro)+1,
+//             createtAt: fecha,
+//             values: [
+//                 {
+//                     hms: hms,
+//                     data:{
+//                         temperatura: data.temperatura,
+//                         humedad: data.humedad,
+//                         msj: data.msj,
+//                         ohmios: data.fotoresistencia,
+//                     }
+//                 }
+//             ]
+//         });
+
+//         await medi.save();
+
+//         return {medi};
+//     }else{
+//         let mediActualizada = await medicion.findOneAndUpdate(
+//             {noRegistro: req.body.noRegistro},
+//             {
+//                 $push:{values: [
+//                         {
+//                             hms: hms,
+//                             data:{
+//                                 temperatura: data.temperatura,
+//                                 humedad: data.humedad,
+//                                 msj: data.msj,
+//                                 ohmios: data.fotoresistencia,
+//                             }
+//                         }
+//                     ]
+//                 }
+//             },
+//             {new: true}
+//         );
+//         await mediActualizada.save();
+
+//         return {mediActualizada};
+//     }       
+// }
 
 module.exports = router;
