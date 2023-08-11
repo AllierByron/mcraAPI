@@ -165,7 +165,7 @@ router.delete('/:email',authTkn.verificarHeaderToken, async (req, res)=>{
   let usr = await usuario.findOne({email: req.params.email});
   if(!usr) return res.status(401).send({message: 'Usuario no encontrado'});
 
-  await fs.unlink(path.resolve('imgs/usuarios/'+usr.foto));
+  if(usr.foto != "") await fs.unlink(path.resolve('imgs/usuarios/'+usr.foto));
   usr.foto = "";
   usr.estado = 'Inactivo';
   usr.updatedAt = Date.now();
