@@ -14,6 +14,7 @@ require('./models/refaccion');
 require('./models/ticket');
 require('./models/solicitud');
 require('./models/tecnico');
+require('./models/medicion');
 
 //router
 var indexRouter = require('./routes/index');
