@@ -111,7 +111,7 @@ router.get('/:codigo',authTkn.verificarHeaderToken, async (req,res)=>{
     
     if(!refa) return res.status(401).send({error: 'Error'});
 
-    if(refa.estado == 'Inactiva') return res.status(401).send({message: 'Refaccion Inactiva'});
+    // if(refa.estado == 'Inactiva') return res.status(401).send({message: 'Refaccion Inactiva'});
     //la url para accesar no esta registrada en la db, solo el nombre de
     //las imgs registradas a la refaccion, mas seguridad
     //agrego la url una vez que se procesa la solicitud 'get'
